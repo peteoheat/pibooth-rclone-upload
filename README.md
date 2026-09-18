@@ -3,12 +3,9 @@ pibooth-rclone-upload
 
 A plugin for [pibooth](https://github.com/pibooth/pibooth) that automatically
 uploads captured photos, GIFs, videos, QR codes, and gallery metadata to any
-[rclone](https://rclone.org) remote.
+[rclone](https://rclone.org) remote. The benefit of using this plugin, is that it makes your pibooth, storage agnostic. You can upload your images to any storage supported by rclone.
 
-The plugin is designed for reliability, resumability, and unattended operation
-during photobooth events. It supports per-file uploads, bulk uploads, manifest tracking,
-QR code inclusion, and configurable timeouts. Uploads run in the background
-without blocking the booth UI.
+The plugin is designed for reliability, resumability, and unattended operation during photobooth events. It supports per-file uploads, bulk uploads, manifest tracking, QR code inclusion, and configurable timeouts. Uploads run in the background without blocking the booth UI.
 
 It is designed to work alongside my pibooth-qrcode and pibooth-gallery modules.
 
@@ -19,19 +16,17 @@ This plugin depends on an existing [rclone](<https://rclone.org>) installation.
 
 Before using ``pibooth-rclone-upload`` you must:
 
-1. **Install rclone** on your system  
-   (e.g., ``sudo apt install rclone`` on Raspberry Pi OS)
+1. **Install rclone on your system in your preferred way**
+   Such as using the command:
 
-2. **Create and configure at least one rclone remote**  
+      sudo apt install rclone
+
+3. **Create and configure at least one rclone remote**  
    using the command:
-
-   .. code-block:: bash
-
+   
        rclone config
 
-   You must define a remote (e.g., ``pibooth-cloudflare``) that the plugin
-   can upload files to. The plugin does not create or configure remotes
-   automatically.
+   You must define a remote that the plugin can upload files to. The plugin does not create or configure remotes automatically.
 
 If rclone is not installed or no remote is configured, uploads will fail.
 
@@ -54,21 +49,15 @@ Installation
 
 Install via pip:
 
-.. code-block:: bash
-
     pip install pibooth-rclone-upload
 
 Or install manually:
-
-.. code-block:: bash
 
     git clone https://github.com/peteoheat/pibooth-rclone-upload
     cd pibooth-rclone-upload
     pip install .
 
 Ensure ``rclone`` is installed and configured:
-
-.. code-block:: bash
 
     sudo apt install rclone
     rclone config
@@ -151,8 +140,6 @@ Two modes are available:
 
 **1. Bulk mode** (``RCLONE_bulk_on_exit = True``)
 
-.. code-block:: bash
-
     rclone copy <local_path>/ <remote>:<bucket>/<subdir>
 
 **2. Per-file mode** (default)
@@ -175,8 +162,6 @@ Dry Run Mode
 ------------
 
 Enable:
-
-.. code-block:: ini
 
     RCLONE_dry_run = True
 
@@ -206,14 +191,10 @@ Troubleshooting
 - Increase ``RCLONE_timeout_bulk``
 - Test manually:
 
-.. code-block:: bash
-
     rclone copy <local> <remote>
 
 Example Configuration
 ---------------------
-
-.. code-block:: ini
 
     [RCLONE_UPLOAD]
     RCLONE_enabled = True

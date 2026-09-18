@@ -6,7 +6,7 @@ uploads captured photos, GIFs, videos, QR codes, and gallery metadata to any
 [rclone](https://rclone.org) remote.
 
 The plugin is designed for reliability, resumability, and unattended operation
-during events. It supports per-file uploads, bulk uploads, manifest tracking,
+during photobooth events. It supports per-file uploads, bulk uploads, manifest tracking,
 QR code inclusion, and configurable timeouts. Uploads run in the background
 without blocking the booth UI.
 
@@ -15,7 +15,7 @@ It is designed to work alongside my pibooth-qrcode and pibooth-gallery modules.
 Pre-requisites
 --------------
 
-This plugin depends on an existing `rclone <https://rclone.org>`_ installation.
+This plugin depends on an existing [rclone](<https://rclone.org>) installation.
 
 Before using ``pibooth-rclone-upload`` you must:
 

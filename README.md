@@ -1,7 +1,7 @@
 pibooth-rclone-upload
 =====================
 
-A plugin for `pibooth <https://github.com/pibooth/pibooth>`_ that automatically
+A plugin for [pibooth](https://github.com/pibooth/pibooth) that automatically
 uploads captured photos, GIFs, videos, QR codes, and gallery metadata to any
 `rclone <https://rclone.org>`_ remote.
 

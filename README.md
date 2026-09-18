@@ -3,7 +3,7 @@ pibooth-rclone-upload
 
 A plugin for [pibooth](https://github.com/pibooth/pibooth) that automatically
 uploads captured photos, GIFs, videos, QR codes, and gallery metadata to any
-`rclone <https://rclone.org>`_ remote.
+[rclone](https://rclone.org) remote.
 
 The plugin is designed for reliability, resumability, and unattended operation
 during events. It supports per-file uploads, bulk uploads, manifest tracking,

@@ -30,6 +30,8 @@ Before using ``pibooth-rclone-upload`` you must:
 
 If rclone is not installed or no remote is configured, uploads will fail.
 
+**Please test your rclone and remote from the command line before continuing with the plugin. If your remote doesn't work at the command line, it won't work from the plugin**
+
 Features
 --------
 

@@ -49,15 +49,16 @@ Features
 Installation
 ------------
 
-Install via pip:
-
-    pip install pibooth-rclone-upload
-
-Or install manually:
+The plugin is a single file, ``pibooth-rclone-upload.py``. Clone the repository
+and tell pibooth where to find it:
 
     git clone https://github.com/peteoheat/pibooth-rclone-upload
-    cd pibooth-rclone-upload
-    pip install .
+
+Then add the full path of the file to the ``plugins`` option in the
+``[GENERAL]`` section of ``pibooth.cfg`` (or run ``pibooth --config``):
+
+    [GENERAL]
+    plugins = /home/pi/pibooth-rclone-upload/pibooth-rclone-upload.py
 
 Ensure ``rclone`` is installed and configured:
 
@@ -67,28 +68,39 @@ Ensure ``rclone`` is installed and configured:
 Configuration
 -------------
 
-The plugin automatically adds a ``[RCLONE_UPLOAD]`` section to your
-``pibooth.cfg`` on first run.
+The plugin automatically adds a ``[RCLONE_UPLOAD]`` section (with default
+values) to your existing ``pibooth.cfg`` the first time it is loaded. Edit it
+with ``pibooth --config`` and restart pibooth.
+
+Two settings are **required** and have no default: ``RCLONE_remote`` and
+``RCLONE_bucket``. If either is missing, if no picture folder can be found, or
+if the remote is not known to rclone for the user running pibooth, an error
+naming the problem is logged and the plugin deactivates itself. pibooth keeps
+running. The settings are checked once at startup.
 
 All available configuration options are listed below.
 
 ``RCLONE_enabled`` (bool, default: ``True``)
     Enable or disable the plugin.
 
-``RCLONE_remote`` (str, default: ``pibooth-cloudflare``)
-    Name of the rclone remote.
+``RCLONE_remote`` (str, **required**, no default)
+    Name of the rclone remote, as shown by ``rclone listremotes`` (without the
+    trailing colon).
 
-``RCLONE_bucket`` (str, default: ``partyselfie``)
+``RCLONE_bucket`` (str, **required**, no default)
     Bucket or top-level directory on the remote.
 
-``RCLONE_subdir`` (str, default: ``pibooth``)
-    Subdirectory inside the bucket.
+``RCLONE_subdir`` (str, default: empty)
+    Optional subdirectory inside the bucket (e.g. an event name).
 
-``RCLONE_local_path`` (str, default: ``Pictures``)
-    Local path where pibooth stores output files.
+``RCLONE_local_path`` (str, default: empty)
+    Folder to upload from. Leave empty to use pibooth's ``[GENERAL] directory``
+    (which may list several folders). A relative path is resolved against that
+    directory.
 
 ``RCLONE_rclone_args`` (str, default: ``--transfers=4 --checkers=8 --retries=3``)
-    Additional rclone arguments.
+    Additional rclone arguments, e.g. ``--config /home/pibooth/.config/rclone/rclone.conf``
+    if pibooth runs as a different user from the one who ran ``rclone config``.
 
 ``RCLONE_dry_run`` (bool, default: ``False``)
     Log actions without uploading.
@@ -103,7 +115,7 @@ All available configuration options are listed below.
     Perform a single bulk ``rclone copy`` on exit.
 
 ``RCLONE_manifest_name`` (str, default: ``.rclone_uploaded_manifest.txt``)
-    Manifest file used to track uploaded files.
+    Manifest file (inside the picture folder) used to track uploaded files.
 
 ``RCLONE_timeout_per_file`` (int, default: ``120``)
     Timeout (seconds) for each file upload.
@@ -129,11 +141,15 @@ During booth operation
 After each capture, the plugin:
 
 - Scans the output folder
-- Detects new files matching configured extensions
+- Detects new files matching configured extensions (and QR codes)
 - Uploads them individually using ``rclone copyto``
 - Records successful uploads in the manifest file
+- Always re-uploads ``thumbs.json`` and ``gallery.html``, which change
+  constantly, and never records them in the manifest
 
-Uploads run in a background thread to avoid blocking the UI.
+Uploads run in a background thread to avoid blocking the UI. Pictures
+"forgotten" on the print screen are moved out of the folder before the upload
+starts, so they are never uploaded.
 
 On exit
 ~~~~~~~
@@ -143,6 +159,8 @@ Two modes are available:
 **1. Bulk mode** (``RCLONE_bulk_on_exit = True``)
 
     rclone copy <local_path>/ <remote>:<bucket>/<subdir>
+
+The ``forget/`` and ``raw/`` sub-folders and the manifest file are excluded.
 
 **2. Per-file mode** (default)
 
@@ -176,7 +194,10 @@ Troubleshooting
 
 - Ensure ``RCLONE_enabled = True``
 - Confirm ``rclone`` is installed and in ``PATH``
-- Verify the remote name using ``rclone listremotes``
+- Verify the remote name using ``rclone listremotes``, running it as the
+  user that runs pibooth
+- Check the pibooth log: a missing ``RCLONE_remote`` / ``RCLONE_bucket`` or an
+  unknown remote deactivates the plugin with an error message
 
 **Files not being detected**
 
@@ -203,7 +224,7 @@ Example Configuration
     RCLONE_remote = pibooth-cloudflare
     RCLONE_bucket = partyselfie
     RCLONE_subdir = event-2025
-    RCLONE_local_path = Pictures
+    RCLONE_local_path =
     RCLONE_rclone_args = --transfers=4 --checkers=8 --retries=3
     RCLONE_upload_on_exit = True
     RCLONE_bulk_on_exit = False

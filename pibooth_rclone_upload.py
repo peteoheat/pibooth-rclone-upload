@@ -6,7 +6,7 @@ Written against pibooth 2.1.0.
 
 Configuration
 -------------
-The options live in the [RCLONE_UPLOAD] section of pibooth.cfg. That section is
+The options live in the [RCLONE] section of pibooth.cfg. That section is
 created automatically the first time the plugin is loaded (see
 ``_ensure_config_section``). Two settings are required and have no default:
 
@@ -32,7 +32,7 @@ from typing import List, Optional
 import pibooth
 from pibooth.utils import LOGGER
 
-SECTION = "RCLONE_UPLOAD"
+SECTION = "RCLONE"
 RCLONE_MANIFEST = ".rclone_uploaded_manifest.txt"
 
 # Files that change over time: re-uploaded on every run, never put in the manifest.

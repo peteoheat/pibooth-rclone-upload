@@ -8,6 +8,8 @@
 - The module is renamed from `pibooth-rclone-upload.py` to `pibooth_rclone_upload.py`
   (a hyphen is not a valid Python module name). Users who loaded the file by path
   must remove that path from `plugins` after installing from PyPI.
+- The `pibooth.cfg` section is renamed from `[RCLONE_UPLOAD]` to `[RCLONE]`. Rename the
+  header of an existing section; the option names are unchanged.
 
 ## 1.4.0
 

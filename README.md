@@ -101,7 +101,7 @@ into that environment.
 Earlier versions were a single file loaded through the `plugins` option of
 `[GENERAL]` in `pibooth.cfg`. After installing from PyPI, **remove the path to
 `pibooth-rclone-upload.py` from that option**, otherwise the plugin is loaded
-twice. Your `[RCLONE_UPLOAD]` settings are unchanged.
+twice. The section in `pibooth.cfg` is now named `[RCLONE]` (it was `[RCLONE_UPLOAD]`): **rename the header of your existing section** to `[RCLONE]`, otherwise the old settings are ignored and an empty `[RCLONE]` section is added. The option names are unchanged.
 
 ### Installing from source
 
@@ -110,7 +110,7 @@ twice. Your `[RCLONE_UPLOAD]` settings are unchanged.
 
 ## Configuration
 
-The plugin automatically adds a `[RCLONE_UPLOAD]` section (with default values)
+The plugin automatically adds a `[RCLONE]` section (with default values)
 to your existing `pibooth.cfg` the first time it is loaded. Edit it with
 `pibooth --config` and restart pibooth.
 
@@ -247,7 +247,7 @@ updated during a dry run.
 
 ## Example configuration
 
-    [RCLONE_UPLOAD]
+    [RCLONE]
     RCLONE_enabled = True
     RCLONE_remote = pibooth-cloudflare
     RCLONE_bucket = partyselfie

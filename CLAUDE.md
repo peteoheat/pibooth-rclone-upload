@@ -25,7 +25,7 @@ Repo contents: `pibooth_rclone_upload.py` (all code), `pyproject.toml` (setuptoo
 
 Pibooth hooks (all in the one file):
 
-- `pibooth_configure(cfg)`: registers every entry of the `OPTIONS` table via `cfg.add_option(...)` under section `[RCLONE_UPLOAD]`, then `_ensure_config_section` appends the section (with defaults and descriptions) to an existing `pibooth.cfg` if missing, since pibooth only writes plugin options on first launch or Settings-menu save.
+- `pibooth_configure(cfg)`: registers every entry of the `OPTIONS` table via `cfg.add_option(...)` under section `[RCLONE]`, then `_ensure_config_section` appends the section (with defaults and descriptions) to an existing `pibooth.cfg` if missing, since pibooth only writes plugin options on first launch or Settings-menu save.
 - `pibooth_startup(cfg, app)`: reads and validates settings (`_read_settings`, `_missing_settings`, `_check_rclone` which runs `rclone listremotes`). The resulting dict is stored on `app.rclone_cfg`. On any problem it logs an error and leaves `{"enabled": False}`.
 - `state_finish_enter(app)`: starts a daemon thread running `_upload_files(app, "capture")`. `finish` comes after the `print` state, where "forgotten" pictures have already been moved out, so they are never uploaded.
 - `pibooth_cleanup(app)`: final upload on exit, run synchronously (a daemon thread would be killed at interpreter exit). Uses `_bulk_copy` (one `rclone copy`, excluding `/forget/**`, `/raw/**` and the manifest) if `RCLONE_bulk_on_exit`, otherwise `_upload_files`.

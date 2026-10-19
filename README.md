@@ -70,10 +70,31 @@ To remove it:
 
     pip uninstall pibooth-rclone-upload
 
-If pibooth was installed in a virtual environment, activate that environment
-first. On recent Raspberry Pi OS releases, `pip` refuses to install into the
-system Python (PEP 668); use the same virtual environment, `pipx inject`, or
-whichever method you used to install pibooth.
+### Raspberry Pi OS (Bookworm and Trixie)
+
+Recent Raspberry Pi OS releases mark the system Python as externally managed
+(PEP 668), so a bare `pip install` fails with `error: externally-managed-environment`.
+Do not work around this with `--break-system-packages`. Install the plugin into
+the same environment as pibooth instead:
+
+- **pibooth in a virtual environment** (recommended): use that environment's
+  `pip` directly, for example
+
+      ~/venv/bin/pip install pibooth-rclone-upload
+
+  or activate it first (`source ~/venv/bin/activate`).
+- **pibooth installed with pipx**:
+
+      pipx inject pibooth pibooth-rclone-upload
+
+- **pibooth installed with `--break-system-packages` or from apt**: the plugin
+  has to go in the same place. If you have not set up a virtual environment
+  yet, create one with `python3 -m venv --system-site-packages ~/venv`, install
+  both `pibooth` and `pibooth-rclone-upload` with `~/venv/bin/pip`, and run
+  pibooth from `~/venv/bin/pibooth`.
+
+Check where pibooth lives with `which pibooth`; the plugin must be installed
+into that environment.
 
 ### Upgrading from a version before 1.5.0
 

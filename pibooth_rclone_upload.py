@@ -1,5 +1,5 @@
 """
-pibooth-rclone-upload.py
+pibooth_rclone_upload
 
 PiBooth plugin that uploads captured pictures to an rclone remote.
 Written against pibooth 2.1.0.
@@ -18,7 +18,7 @@ user running pibooth, an error naming the offending setting is logged and the
 plugin deactivates itself. pibooth itself keeps running.
 """
 
-__version__ = "1.4.0"
+__version__ = "1.5.0"
 
 import io
 import os

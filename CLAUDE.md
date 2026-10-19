@@ -2,15 +2,24 @@
 
 ## Project
 
-`pibooth-rclone-upload` is a single-file [pibooth](https://github.com/pibooth/pibooth) plugin (`pibooth-rclone-upload.py`, written against pibooth 2.1.0) that uploads captured pictures, GIFs, videos, QR codes and gallery sidecar files to any rclone remote by shelling out to the `rclone` CLI. Designed to work alongside the author's pibooth-qrcode and pibooth-gallery plugins. MIT licensed.
+`pibooth-rclone-upload` is a single-file [pibooth](https://github.com/pibooth/pibooth) plugin (`pibooth_rclone_upload.py`, written against pibooth 2.1.0) that uploads captured pictures, GIFs, videos, QR codes and gallery sidecar files to any rclone remote by shelling out to the `rclone` CLI. Designed to work alongside the author's pibooth-qrcode and pibooth-gallery plugins. MIT licensed.
 
-Repo contents: `pibooth-rclone-upload.py` (all code), `README.md`, `LICENSE`. There is no `setup.py`/`pyproject.toml`, test suite, linter or CI in the repo; the plugin is installed by pointing pibooth's `[GENERAL] plugins` option at the file. The version lives in `__version__` in the plugin file (currently 1.4.0); commits like "Update rclone upload plugin to version X" bump it.
+Repo contents: `pibooth_rclone_upload.py` (all code), `pyproject.toml` (setuptools packaging), `README.md` (also the PyPI long description), `CHANGELOG.md`, `LICENSE`. There is no test suite, linter or CI. The plugin is published on PyPI as `pibooth-rclone-upload` and registers itself with pibooth through the `pibooth` entry point group in `pyproject.toml`, so users do not set `[GENERAL] plugins`. The version lives only in `__version__` in the plugin file (currently 1.5.0); `pyproject.toml` reads it dynamically. Bump it and add a `CHANGELOG.md` entry for each release.
 
 ## Running / testing
 
 - The plugin imports `pibooth` and cannot run standalone. It needs pibooth installed (typically on a Raspberry Pi) with `rclone` on `PATH` and a configured remote.
 - Manual testing: set `RCLONE_dry_run = True` in `pibooth.cfg` to log rclone commands without executing them. Test the remote with plain `rclone` on the command line first (README stresses this).
-- Quick syntax check on any machine: `python -m py_compile pibooth-rclone-upload.py`.
+- Quick syntax check on any machine: `python -m py_compile pibooth_rclone_upload.py`.
+- Local install for testing: `pip install -e .` in the pibooth environment.
+
+## Releasing to PyPI
+
+1. Bump `__version__` and update `CHANGELOG.md` and the README if options changed.
+2. `python -m pip install --upgrade build twine`, then `python -m build` (creates `dist/`).
+3. `python -m twine check dist/*`.
+4. Test first: `python -m twine upload --repository testpypi dist/*`.
+5. Publish: `python -m twine upload dist/*` (use a PyPI API token; username `__token__`). A version can never be re-uploaded, so always bump.
 
 ## Architecture
 

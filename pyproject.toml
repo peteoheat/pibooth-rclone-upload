@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pibooth-rclone-upload"
+dynamic = ["version"]
+description = "Pibooth plugin that uploads pictures, GIFs, videos and QR codes to any rclone remote"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "peteoheat", email = "peteoheat@gmail.com" }]
+keywords = ["pibooth", "photobooth", "raspberry-pi", "rclone", "upload", "plugin"]
+dependencies = ["pibooth>=2.0.0"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Other Environment",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Multimedia :: Graphics :: Capture :: Digital Camera",
+]
+
+[project.urls]
+Homepage = "https://github.com/peteoheat/pibooth-rclone-upload"
+Issues = "https://github.com/peteoheat/pibooth-rclone-upload/issues"
+
+# pibooth discovers installed plugins through this entry point group.
+[project.entry-points.pibooth]
+pibooth_rclone_upload = "pibooth_rclone_upload"
+
+[tool.setuptools]
+py-modules = ["pibooth_rclone_upload"]
+
+[tool.setuptools.dynamic]
+version = { attr = "pibooth_rclone_upload.__version__" }
